@@ -1,0 +1,210 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  overflow: hidden;
+  background: #ffeaf3;
+}
+
+/* ========================= MAIN ========================= */
+.container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 16px;
+  background: radial-gradient(circle at top, #ffd6e7, #ffeaf3 70%);
+}
+
+/* ========================= BACKGROUND HEARTS ========================= */
+.love-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.love-bg span {
+  position: absolute;
+  bottom: -20px;
+  font-size: 16px;
+  opacity: 0.5;
+  animation: floatLove 7s linear infinite;
+}
+
+@keyframes floatLove {
+  0%   { transform: translateY(0);       opacity: 0; }
+  20%  {                                 opacity: 0.6; }
+  100% { transform: translateY(-110vh);  opacity: 0; }
+}
+
+/* ========================= CARD ========================= */
+.teddy-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 15px 40px rgba(255, 63, 129, 0.15);
+}
+
+/* ========================= TEDDY ========================= */
+.teddy {
+  font-size: 90px;
+  margin-bottom: 10px;
+}
+
+.kiss-animation { animation: bounce 1.2s ease-in-out infinite; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+/* ========================= TEXT ========================= */
+h1 {
+  color: #ff2f78;
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+
+/* ========================= BUTTONS ========================= */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* YES */
+.yes-btn {
+  background: linear-gradient(135deg, #ff4d88, #ff2f78);
+  color: white;
+  animation: jiggle 1.5s ease-in-out infinite;
+  box-shadow: 0 8px 18px rgba(255, 63, 129, 0.25);
+  width: 100%;
+  max-width: 220px;
+}
+
+@keyframes jiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%       { transform: rotate(-1.5deg); }
+  50%       { transform: rotate(1.5deg); }
+  75%       { transform: rotate(-1deg); }
+}
+
+/* NO — auto-sized, never inherits width:100% */
+.no-btn {
+  background: linear-gradient(135deg, #ff8fb1, #ff5c8d);
+  color: white;
+  width: auto;
+  max-width: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;   /* prevents scroll-interference on mobile */
+  z-index: 20;
+}
+
+/* ========================= KISS ========================= */
+.kiss {
+  font-size: 60px;
+  animation: flykiss 1.8s ease forwards;
+}
+
+@keyframes flykiss {
+  0%   { transform: translate(0, 0);        opacity: 1; }
+  100% { transform: translate(120px,-100px); opacity: 0; }
+}
+
+/* =========================
+   POPUP CARDS
+   
+   Three-layer structure keeps animations independent:
+     .popup-card          — position: fixed anchor  (+ colour class)
+     └── .popup-float     — perpetual float motion (duration set inline)
+         └── .popup-body  — visual pill + spring pop-in
+========================= */
+.popup-card {
+  position: fixed;
+  z-index: 10;
+  pointer-events: none; /* never blocks click-through */
+}
+
+.popup-float {
+  /* duration overridden inline per card so they all bob at different speeds */
+  animation: floatCard 3s ease-in-out 0.55s infinite;
+}
+
+.popup-body {
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow:
+    0 6px 20px rgba(255, 63, 129, 0.2),
+    0 0 0 1.5px rgba(255, 120, 160, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* spring overshoot pop-in; "both" keeps final state after animation */
+  animation: popIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* ── Colour variants ── */
+.popup-pink   .popup-body { background: linear-gradient(135deg, #fff0f7, #ffd6e7); color: #d60059; }
+.popup-yellow .popup-body { background: linear-gradient(135deg, #fffbe6, #ffe48a); color: #9a5c00; }
+.popup-blue   .popup-body { background: linear-gradient(135deg, #eaf4ff, #bfdbff); color: #1453b0; }
+.popup-green  .popup-body { background: linear-gradient(135deg, #e6fff4, #a8f0cb); color: #0a6e3d; }
+
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.4)  translateY(18px); }
+  65%  { opacity: 1; transform: scale(1.12) translateY(-4px); }
+  100% { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+/* float starts at translateY(0) — matches element's natural state, no jump */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* ========================= HEARTS (after yes) ========================= */
+.hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 18px;
+  animation: floatHeart 6s linear infinite;
+}
+
+@keyframes floatHeart {
+  0%   { transform: translateY(0);      opacity: 1; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
